@@ -36,8 +36,13 @@ let cosine (n: int) (x: float) =
         ((float -1) ** i * x ** (float (2 * i)))
         / fact (2 * i)
 
-    List.map term [ 0 .. number_of_terms ]
-    |> List.reduce (+)
+    let last_i_in_list = number_of_terms - 1
+    let i_list = [ 0 .. last_i_in_list ]
+
+    if i_list = [] then
+        float 0
+    else
+        List.map term i_list |> List.reduce (+)
 
 /// computes the taylor expansion of sin(x) up to order n
 let sine (n: int) (x: float) =
@@ -47,8 +52,13 @@ let sine (n: int) (x: float) =
         (float -1) ** i * x ** (float (2 * i + 1))
         / fact (2 * i + 1)
 
-    List.map term [ 0 .. number_of_terms ]
-    |> List.reduce (+)
+    let last_i_in_list = number_of_terms - 1
+    let i_list = [ 0 .. last_i_in_list ]
+
+    if i_list = [] then
+        float 0
+    else
+        List.map term i_list |> List.reduce (+)
 
 
 
