@@ -4,25 +4,65 @@
 
 // top-level subfunctions of polarToCartesianApprox (if any)
 
-// computes n! = n * (n-1) * ... * 2 * 1
+///computes n! = n * (n-1) * ... * 2 * 1
 let fact n =
     if n = 0 then
         1.0
     else
         List.reduce (*) [ 1.0 .. float n ]
 
-// computes the first n+1 terms of taylor expansion of cos(x)
+/// computes the number of odd numbers in range [0,R]
+let number_of_odd R =
+    let N = R + 1
+
+    if N % 2 = 0 then
+        let odd_numbers = N / 2
+        odd_numbers
+    else
+        let odd_numbers = ((N - 1) / 2)
+        odd_numbers
+
+/// computes the number of even numbers in range [0,R]
+let number_of_even R =
+    let N = R + 1
+    N - number_of_odd R
+
+
+/// computes the taylor expansion of cos(x) up to order n
 let cosine (n: int) (x: float) =
+    let number_of_terms = number_of_even n
+
     let term (i: int) =
         ((float -1) ** i * x ** (float (2 * i)))
         / fact (2 * i)
 
-    List.map term [ 0 .. n ] |> List.reduce (+)
+    List.map term [ 0 .. number_of_terms ]
+    |> List.reduce (+)
+
+/// computes the taylor expansion of sin(x) up to order n
+let sine (n: int) (x: float) =
+    let number_of_terms = number_of_odd n
+
+    let term (i: int) =
+        (float -1) ** i * x ** (float (2 * i + 1))
+        / fact (2 * i + 1)
+
+    List.map term [ 0 .. number_of_terms ]
+    |> List.reduce (+)
+
 
 
 /// answer to Tick1
 // the header given here is correct.
-let polarToCartesianApprox (r, theta) n = failwithf "Tick1 not yet implemented" // replace this line with your top-level implementation
+let polarToCartesianApprox (r, theta) n =
+
+    let cosine_n = cosine n
+    let sine_n = sine n
+
+    let x = r * (cosine_n theta)
+    let y = r * (sine_n theta)
+
+    (x, y)
 
 
 //--------------------testbench code - DO NOT CHANGE-----------------------------//
