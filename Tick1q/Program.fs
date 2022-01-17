@@ -12,8 +12,8 @@ let fact n =
         List.reduce (*) [ 1.0 .. float n ]
 
 /// computes the i-th term of the taylor expansion for cos(x) or sin(x)
-let term (x: float) (i: int) =
-    ((float -1) ** i * x ** (float (i))) / fact (i)
+let term (x: float) (i: int) (j: int) =
+    ((float -1) ** i * x ** (float (j))) / fact (j)
 
 /// computes the taylor expansion of cos(x) up to order n
 let cosine (n: int) (x: float) =
@@ -22,8 +22,7 @@ let cosine (n: int) (x: float) =
     if lst = [] then
         float 0
     else
-        List.map (term x) lst |> List.reduce (+)
-
+        List.mapi (term x) lst |> List.reduce (+)
 
 
 /// computes the taylor expansion of sin(x) up to order n
@@ -33,7 +32,7 @@ let sine (n: int) (x: float) =
     if lst = [] then
         float 0
     else
-        List.map (term x) lst |> List.reduce (+)
+        List.mapi (term x) lst |> List.reduce (+)
 
 
 
